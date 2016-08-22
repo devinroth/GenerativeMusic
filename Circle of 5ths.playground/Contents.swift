@@ -106,12 +106,10 @@ while true {
     }
     
     //control the range of piano notes
-    if pianoNote > 84 {
+    if pianoNote > 75 {
         pianoNote -= 12
     } else if pianoNote < 60 {
         pianoNote += 12
-    } else {
-        pianoNote += -12 * Int(arc4random_uniform(2))
     }
 }
 
