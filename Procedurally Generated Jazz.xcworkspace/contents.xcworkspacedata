@@ -4,4 +4,7 @@
    <FileRef
       location = "group:README.md">
    </FileRef>
+   <FileRef
+      location = "group:Circle of 5ths.playground">
+   </FileRef>
 </Workspace>
