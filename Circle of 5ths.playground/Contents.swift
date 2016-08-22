@@ -26,8 +26,7 @@ func midiOut(_ status:Int, byte1: Int, byte2:Int) {
 }
 
 //piano notes
-var piano:[[Int?]] = [
-    [3,5,-2,-1],
+var piano:[[Int?]] = [[3,5,-2,-1],
     [9,-1,-2,-1],
     [6,-3,1,1],
     [3,3,-2,1],
@@ -110,6 +109,8 @@ while true {
     if pianoNote > 84 {
         pianoNote -= 12
     } else if pianoNote < 60 {
+        pianoNote += 12
+    } else {
         pianoNote += -12 * Int(arc4random_uniform(2))
     }
 }
