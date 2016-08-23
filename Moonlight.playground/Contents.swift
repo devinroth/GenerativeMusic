@@ -1,4 +1,4 @@
-//: Playground - noun: a place where people can play
+//Copyright (c) 2016 Devin Roth
 
 import Foundation
 import CoreMIDI

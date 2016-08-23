@@ -1,10 +1,14 @@
-# Procedurally Generated Jazz
+# GenerativeMusic
 
-## Description
+The goal of this project is to create generative music based on specific style using Swift Playground on macOS with Xcode 8.
 
-Procedurally generated jazz using Swift Playground in Xcode 8. The code outputs MIDI which is routed to and played back by Kontakt instruments.
+For this project the algorithms produce a midi output which is routed to Kontakt and played back with virtual instruments. I view each algorithm as a separate musical work. 
 
-The chords follow a common jazz improvisation exersice on the circle of fifths.
+[TOC]
+
+## JazzCycle
+
+JazzCycle follows a common jazz improvisation exersice on the circle of fifths. 
 
 ## Video
 
