@@ -16,10 +16,11 @@ JazzCycle follows a common jazz improvisation exersice on the circle of fifths.
 
 ### To Do
 
-* Seeding
-* Left hand piano chords
-* Bass line variations
-* Triplets
+- [x] Seeding
+- [ ] Left hand piano chords
+- [x] Bass line variations
+- [ ] Triplets
+- [ ] adjust tempo
 
 
 
@@ -33,6 +34,7 @@ Inspired by Beethoven's Moonlight Sonata, this algorithm creates a lyrical melod
 
 ### To Do
 
-* Seeding
-* Logical chord progressions
-* Non-chord tones in melody
+- [x] Seeding
+- [ ] Logical chord progressions
+- [ ] Non-chord tones in melody
+- [ ] Adjust tempo

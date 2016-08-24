@@ -25,6 +25,13 @@ func midiOut(_ status:Int, byte1: Int, byte2:Int) {
     packetList.deallocate(capacity: 1)
 }
 
+//number generator
+srand48(0)
+func random(_ limit: Int)->Int {
+    let limit = Double(limit) - 1
+    return Int(round(drand48()*limit))
+}
+
 //piano notes
 var piano:[[Int?]] = [[3,5,-2,-1],
     [9,-1,-2,-1],
@@ -60,8 +67,8 @@ var ride:[[Bool]] = [
 while true {
     
     //select patterns
-    var pianoPattern = Int(arc4random_uniform(UInt32(piano.count)))
-    var ridePattern = Int(arc4random_uniform(UInt32(ride.count)))
+    var pianoPattern = random(piano.count)
+    var ridePattern = random(ride.count)
     
     //play notes
     for i in 0..<4 {
@@ -69,21 +76,21 @@ while true {
         //piano note on
         if let note = piano[pianoPattern][i]{
             pianoNote = pianoNote + note
-            midiOut(144, byte1: pianoNote, byte2: 35 + Int(arc4random_uniform(60)))
+            midiOut(144, byte1: pianoNote, byte2: 35 + random(60))
         }
         
         //drums
         if ride[ridePattern][i] == true {
-            midiOut(146, byte1: 54, byte2: 20 + Int(arc4random_uniform(40))) //ride on
+            midiOut(146, byte1: 54, byte2: 20 + random(40)) //ride on
             midiOut(146, byte1: 54, byte2: 0) //ride off
         }
         if i == 1 {
-            midiOut(146, byte1: 51, byte2: 20 + Int(arc4random_uniform(40))) //hh on
+            midiOut(146, byte1: 51, byte2: 20 + random(40)) //hh on
             midiOut(146, byte1: 51, byte2: 0) //hh off
         }
         
         //bass
-        if i == 3 {
+        if i == 1 {
             midiOut(145, byte1: bass[bassNote]+48, byte2: 0) //bass note off
             
             //reset bass notes
@@ -91,6 +98,18 @@ while true {
             if bassNote == 12 {
                 bassNote = 0
             }
+            
+            var rand = random(5)
+            if rand == 0 {
+                midiOut(145, byte1: bass[bassNote]+48-1, byte2: 50) //bass note on
+            }
+            if rand == 1 {
+                midiOut(145, byte1: bass[bassNote]+48+1, byte2: 50) //bass note on
+            }
+        }
+        if i == 3 {
+            midiOut(145, byte1: bass[bassNote]+48-1, byte2: 0) //bass note off
+            midiOut(145, byte1: bass[bassNote]+48+1, byte2: 0) //bass note off
             midiOut(145, byte1: bass[bassNote]+48, byte2: 50) //bass note on
         }
         
