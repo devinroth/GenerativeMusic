@@ -7,8 +7,8 @@ import CoreMIDI
 var client = MIDIClientRef()
 var source = MIDIEndpointRef()
 
-MIDIClientCreate("ChordGenerator" as CFString, nil, nil, &client)
-MIDISourceCreate(client, "ChordGeneratorOut" as CFString, &source)
+MIDIClientCreate("GenerativeMusic" as CFString, nil, nil, &client)
+MIDISourceCreate(client, "Moonlight" as CFString, &source)
 
 sleep(1)    //wait until midi is setup
 
@@ -25,10 +25,17 @@ func midiOut(_ status:Int, byte1: Int, byte2:Int) {
     packetList.deallocate(capacity: 1)
 }
 
+//number generator
+srand48(0)
+func random(_ limit: Int)->Int {
+    let limit = Double(limit) - 1
+    return Int(round(drand48()*limit))
+}
 
+//chord generator
 func generateChord()->[Int]{
-    let root = Int(arc4random_uniform(12)) + 48
-    var third = root + 3 + Int(arc4random_uniform(2))
+    let root = random(12) + 48
+    var third = root + 3 + random(2)
     if third > 60 {
         third = third - 12
     }
@@ -45,13 +52,13 @@ while true {
     var voicing = chord.sorted()
     
     //melody note
-    var melody = chord[Int(arc4random_uniform(3))] + 24
-    var melodyVelocity = 40 + Int(arc4random_uniform(20))
+    var melody = chord[random(3)] + 24
+    var melodyVelocity = 40 + random(20)
     midiOut(144, byte1: melody, byte2: melodyVelocity)
     
     //bass note
     var bass = chord[0] - 12
-    var bassVelocity = 20 + Int(arc4random_uniform(20))
+    var bassVelocity = 20 + random(20)
     midiOut(144, byte1: bass, byte2: bassVelocity)
     
     //pedal
@@ -59,32 +66,29 @@ while true {
     
     for i in 0..<4 {
         if i == 2 {
-            var random = arc4random_uniform(2)
-            if random == 0 {
+            if random(2) == 0 {
                 midiOut(144, byte1: melody, byte2: 0)
-                melody = chord[Int(arc4random_uniform(3))] + 24
+                melody = chord[random(3)] + 24
                 midiOut(144, byte1: melody, byte2: melodyVelocity - 5)
             }
         }
         
-        midiOut(144, byte1: voicing[0], byte2: 20 + Int(arc4random_uniform(20)))
+        midiOut(144, byte1: voicing[0], byte2: 20 + random(20))
         usleep(300000)
         midiOut(144, byte1: voicing[0], byte2: 0)
-        midiOut(144, byte1: voicing[1], byte2: 10 + Int(arc4random_uniform(20)))
+        midiOut(144, byte1: voicing[1], byte2: 10 + random(20))
         usleep(300000)
         
         if i == 3 {
-            var random = arc4random_uniform(3)
-            if random == 0 {
+            if random(3) == 0 {
                 midiOut(144, byte1: melody, byte2: 0)
-                melody = chord[Int(arc4random_uniform(3))] + 24
+                melody = chord[random(3)] + 24
                 midiOut(144, byte1: melody, byte2: melodyVelocity - 10)
             }
         }
-        
-        
+
         midiOut(144, byte1: voicing[1], byte2: 0)
-        midiOut(144, byte1: voicing[2], byte2: 10 + Int(arc4random_uniform(20)))
+        midiOut(144, byte1: voicing[2], byte2: 10 + random(20))
         usleep(300000)
         midiOut(144, byte1: voicing[2], byte2: 0)
     }
@@ -93,6 +97,5 @@ while true {
     midiOut(144, byte1: bass, byte2: 0)
     midiOut(0b10110000, byte1: 64, byte2: 0)
     usleep(5000)
-    
-    
 }
+
