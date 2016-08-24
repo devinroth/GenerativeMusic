@@ -21,6 +21,18 @@ JazzCycle follows a common jazz improvisation exersice on the circle of fifths.
 * Bass line variations
 * Triplets
 
+
+
 ##Moonlight
+
 Inspired by Beethoven's Moonlight Sonata, this algorithm creates a lyrical melody accompianed by randomly generated broken chords. 
 
+### Video
+
+[![YouTube Thumbnail](http://img.youtube.com/vi/esRdmKYucIw/1.jpg)](https://youtu.be/esRdmKYucIw)
+
+### To Do
+
+* Seeding
+* Logical chord progressions
+* Non-chord tones in melody
