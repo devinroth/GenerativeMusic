@@ -55,7 +55,7 @@ var pianoNote = 64
 var pianoChords = [[4,10,14],[-2,4,9]]
 
 //bass notes
-var bass = [0,5,10,3,8,1,6,-1,4,-3,2,-5]
+var bass = [0,5,-2,3,-4,1,6,-1,4,-3,2,-5]
 var bassNote = 0
 
 //drum rhythms
@@ -65,13 +65,14 @@ var ride:[[Bool]] = [
     [false,true,true,true]
 ]
 
+var chord = pianoChords[bassNote%2]
+
 //main loop
 while true {
     
     //select patterns
     var pianoPattern = random(piano.count)
     var ridePattern = random(ride.count)
-    var chord = pianoChords[bassNote%2]
     
     
     //play notes
@@ -82,11 +83,22 @@ while true {
             pianoNote = pianoNote + note
             midiOut(144, byte1: pianoNote, byte2: 35 + random(60))
         }
-        
-        //piano chords
-        if i == 2 && piano[pianoPattern][3] == nil ||  i == 3 && piano[pianoPattern][3] != nil {
+        if i == 0 && random(3) == 0 {
+            var chordVelocity = 20 + random(50)
             for note in chord {
-                midiOut(144, byte1: note + bass[bassNote] + 48, byte2: 20 + random(50))
+                midiOut(144, byte1: note + bass[bassNote] + 48, byte2: chordVelocity )
+            }
+        }
+        
+        if i == 2 {
+            if bassNote < 6 {
+                chord = pianoChords[bassNote%2]
+            } else {
+                chord = pianoChords[1 - bassNote%2]
+            }
+            var chordVelocity = 20 + random(50)
+            for note in chord {
+                midiOut(144, byte1: note + bass[bassNote] + 48, byte2: chordVelocity)
             }
         }
         
@@ -141,10 +153,12 @@ while true {
     }
     
     //control the range of piano notes
-    if pianoNote > 85 {
+    if pianoNote > 90 {
         pianoNote -= 12
     } else if pianoNote < 60 {
         pianoNote += 12
+    } else {
+        pianoNote = pianoNote - 12 * random(2)
     }
 }
 
