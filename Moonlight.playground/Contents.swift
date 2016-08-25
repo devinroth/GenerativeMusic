@@ -3,6 +3,10 @@
 import Foundation
 import CoreMIDI
 
+//master controls
+var seed = 1
+var tempo = 60
+
 //midi setup
 var client = MIDIClientRef()
 var source = MIDIEndpointRef()
@@ -26,7 +30,7 @@ func midiOut(_ status:Int, byte1: Int, byte2:Int) {
 }
 
 //number generator
-srand48(0)
+srand48(seed)
 func random(_ limit: Int)->Int {
     let limit = Double(limit) - 1
     return Int(round(drand48()*limit))
@@ -64,8 +68,8 @@ while true {
     //pedal
     midiOut(0b10110000, byte1: 64, byte2: 127)
     
-    for i in 0..<4 {
-        if i == 2 {
+    for b in 0..<4 {
+        if b == 2 {
             if random(2) == 0 {
                 midiOut(144, byte1: melody, byte2: 0)
                 melody = chord[random(3)] + 24
@@ -74,12 +78,12 @@ while true {
         }
         
         midiOut(144, byte1: voicing[0], byte2: 20 + random(20))
-        usleep(300000)
+        usleep(useconds_t(20000000/tempo))
         midiOut(144, byte1: voicing[0], byte2: 0)
         midiOut(144, byte1: voicing[1], byte2: 10 + random(20))
-        usleep(300000)
+        usleep(useconds_t(20000000/tempo))
         
-        if i == 3 {
+        if b == 3 {
             if random(3) == 0 {
                 midiOut(144, byte1: melody, byte2: 0)
                 melody = chord[random(3)] + 24
@@ -89,7 +93,7 @@ while true {
 
         midiOut(144, byte1: voicing[1], byte2: 0)
         midiOut(144, byte1: voicing[2], byte2: 10 + random(20))
-        usleep(300000)
+        usleep(useconds_t(20000000/tempo))
         midiOut(144, byte1: voicing[2], byte2: 0)
     }
     
