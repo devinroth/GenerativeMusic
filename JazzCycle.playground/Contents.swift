@@ -3,6 +3,12 @@
 import Foundation
 import CoreMIDI
 
+//control variables
+var seed = 0
+var tempo = 100
+var complexity = 50 // 0 - 100
+
+
 //midi setup
 var client = MIDIClientRef()
 var source = MIDIEndpointRef()
@@ -26,28 +32,29 @@ func midiOut(_ status:Int, byte1: Int, byte2:Int) {
 }
 
 //number generator
-srand48(0)
+srand48(seed)
 func random(_ limit: Int)->Int {
     let limit = Double(limit) - 1
     return Int(round(drand48()*limit))
 }
 
 //piano notes
-var piano:[[Int?]] = [[3,5,-2,-1],
+var piano:[[Int?]] = [
+    [nil,nil,nil,nil],
+    [nil,nil,5,nil],
+    [nil,nil,6,-1],
+    [4,nil,1,nil],
+    [nil,nil,4,1],
+    [nil,4,1,nil],
+    [nil,4,nil,1],
+    [8,nil,-2,-1],
+    [3,5,-2,-1],
     [9,-1,-2,-1],
     [6,-3,1,1],
     [3,3,-2,1],
     [1,2,1,1],
     [10,-2,-2,-1],
     [7,-1,-2,1],
-    [8,nil,-2,-1],
-    [nil,nil,4,1],
-    [nil,nil,6,-1],
-    [nil,nil,nil,5],
-    [nil,nil,5,nil],
-    [4,nil,1,nil],
-    [nil,4,1,nil],
-    [nil,4,nil,1],
     [4,-1,3,-1]
 ]
 var pianoNote = 64
@@ -72,24 +79,28 @@ while true {
     
     //select patterns
     var pianoPattern = random(piano.count)
+    if pianoPattern == 0 {
+        pianoNote += 5
+    }
     var ridePattern = random(ride.count)
     
     
     //play notes
     for i in 0..<4 {
         
-        //piano note on
+        //piano solo note on
         if let note = piano[pianoPattern][i]{
             pianoNote = pianoNote + note
             midiOut(144, byte1: pianoNote, byte2: 35 + random(60))
         }
-        if i == 0 && random(3) == 0 {
+        
+        //piano chords
+        if i == 0 && random(4) == 0 {
             var chordVelocity = 20 + random(50)
             for note in chord {
                 midiOut(144, byte1: note + bass[bassNote] + 48, byte2: chordVelocity )
             }
         }
-        
         if i == 2 {
             if bassNote < 6 {
                 chord = pianoChords[bassNote%2]
@@ -138,9 +149,9 @@ while true {
         
         //set time between notes
         if i == 0 || i == 2 {
-            usleep(200000)
+            usleep(useconds_t(24_000_000/tempo))
         } else {
-            usleep(300000)
+            usleep(useconds_t(36_000_000/tempo))
         }
         
         //piano note off
