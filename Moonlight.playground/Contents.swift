@@ -58,48 +58,44 @@ while true {
     //melody note
     var melody = chord[random(3)] + 24
     var melodyVelocity = 40 + random(20)
-    midiOut(144, byte1: melody, byte2: melodyVelocity)
+    midiOut(144, byte1: melody, byte2: melodyVelocity) // melody note on
     
     //bass note
     var bass = chord[0] - 12
     var bassVelocity = 20 + random(20)
-    midiOut(144, byte1: bass, byte2: bassVelocity)
+    midiOut(144, byte1: bass, byte2: bassVelocity) // bass note on
     
-    //pedal
-    midiOut(0b10110000, byte1: 64, byte2: 127)
-    
-    for b in 0..<4 {
-        if b == 2 {
+    for beat in 1...4 {
+        
+        if beat == 3 {
             if random(2) == 0 {
-                midiOut(144, byte1: melody, byte2: 0)
+                midiOut(144, byte1: melody, byte2: 0) // melody note off
                 melody = chord[random(3)] + 24
-                midiOut(144, byte1: melody, byte2: melodyVelocity - 5)
+                midiOut(144, byte1: melody, byte2: melodyVelocity - 5) // melody note on
             }
         }
         
-        midiOut(144, byte1: voicing[0], byte2: 20 + random(20))
-        usleep(useconds_t(20000000/tempo))
-        midiOut(144, byte1: voicing[0], byte2: 0)
-        midiOut(144, byte1: voicing[1], byte2: 10 + random(20))
-        usleep(useconds_t(20000000/tempo))
-        
-        if b == 3 {
-            if random(3) == 0 {
-                midiOut(144, byte1: melody, byte2: 0)
-                melody = chord[random(3)] + 24
-                midiOut(144, byte1: melody, byte2: melodyVelocity - 10)
+        for triplet in 1...3 {
+            
+            if beat == 4 && triplet == 3 {
+                if random(3) == 0 {
+                    midiOut(144, byte1: melody, byte2: 0) // melody note off
+                    melody = chord[random(3)] + 24
+                    midiOut(144, byte1: melody, byte2: melodyVelocity - 10) // melody note on
+                }
             }
+            
+            midiOut(144, byte1: voicing[triplet - 1], byte2: 20 + random(20)) // voicing note on
+            
+            usleep(useconds_t(20000000/tempo))
+            
+            midiOut(0b10110000, byte1: 64, byte2: 127) // pedal on
+            midiOut(144, byte1: voicing[triplet - 1], byte2: 0) // voicing note off
         }
-
-        midiOut(144, byte1: voicing[1], byte2: 0)
-        midiOut(144, byte1: voicing[2], byte2: 10 + random(20))
-        usleep(useconds_t(20000000/tempo))
-        midiOut(144, byte1: voicing[2], byte2: 0)
     }
     
     midiOut(144, byte1: melody, byte2: 0)
     midiOut(144, byte1: bass, byte2: 0)
-    midiOut(0b10110000, byte1: 64, byte2: 0)
-    usleep(5000)
+    midiOut(0b10110000, byte1: 64, byte2: 0) // pedal off
 }
 
