@@ -108,7 +108,7 @@ while true {
             midiOut(146, byte1: 54, byte2: 0) //ride off
         }
         if i == 1 {
-            midiOut(146, byte1: 52, byte2: 20 + random(40)) //hh on
+            midiOut(146, byte1: 52, byte2: 30 + random(40)) //hh on
             midiOut(146, byte1: 52, byte2: 0) //hh off
         }
         
