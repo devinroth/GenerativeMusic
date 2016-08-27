@@ -14,7 +14,7 @@ var source = MIDIEndpointRef()
 MIDIClientCreate("GenerativeMusic" as CFString, nil, nil, &client)
 MIDISourceCreate(client, "Moonlight" as CFString, &source)
 
-sleep(1)    //wait until midi is setup
+sleep(1)    //wait until midi is set up
 
 func midiOut(_ status:Int, byte1: Int, byte2:Int) {
     var packet = UnsafeMutablePointer<MIDIPacket>.allocate(capacity: 1)
@@ -38,30 +38,44 @@ func random(_ limit: Int)->Int {
 
 //chord generator
 func generateChord()->[Int]{
-    let root = random(12) + 48
-    var third = root + 3 + random(2)
-    if third > 60 {
-        third = third - 12
-    }
-    var fifth = root + 7
-    if fifth > 60 {
-        fifth = fifth - 12
-    }
+    let root = random(12)
+    let third = root + 3 + random(2)
+    let fifth = root + 7
+
     return [root,third,fifth]
     
+}
+//melody generator
+func generateMelody(_ chord: [Int]) -> Int {
+    var melody = chord[random(3)] + 72
+    if melody > 84 {
+        melody -= 12
+    }
+    return melody
+}
+//voice chord
+func createVoicing(_ chord: [Int]) -> [Int] {
+    var voicing = chord
+    for note in 0..<voicing.count {
+        voicing[note] += 48
+        if voicing[note] > 60 {
+            voicing[note] -= 12
+        }
+    }
+    return voicing.sorted()
 }
 
 while true {
     var chord = generateChord()
-    var voicing = chord.sorted()
+    var voicing = createVoicing(chord)
     
     //melody note
-    var melody = chord[random(3)] + 24
+    var melody = generateMelody(chord)
     var melodyVelocity = 40 + random(20)
     midiOut(144, byte1: melody, byte2: melodyVelocity) // melody note on
     
     //bass note
-    var bass = chord[0] - 12
+    var bass = chord[0] + 36
     var bassVelocity = 20 + random(20)
     midiOut(144, byte1: bass, byte2: bassVelocity) // bass note on
     
@@ -70,7 +84,7 @@ while true {
         if beat == 3 {
             if random(2) == 0 {
                 midiOut(144, byte1: melody, byte2: 0) // melody note off
-                melody = chord[random(3)] + 24
+                var melody = generateMelody(chord)
                 midiOut(144, byte1: melody, byte2: melodyVelocity - 5) // melody note on
             }
         }
@@ -80,7 +94,7 @@ while true {
             if beat == 4 && triplet == 3 {
                 if random(3) == 0 {
                     midiOut(144, byte1: melody, byte2: 0) // melody note off
-                    melody = chord[random(3)] + 24
+                    var melody = generateMelody(chord)
                     midiOut(144, byte1: melody, byte2: melodyVelocity - 10) // melody note on
                 }
             }
