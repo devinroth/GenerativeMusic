@@ -19,8 +19,9 @@ JazzCycle follows a common jazz improvisation exersice on the circle of fifths.
 - [x] Seeding
 - [x] Left hand piano chords
 - [x] Bass line variations
-- [ ] Triplets
+- [x] Triplets
 - [x] tempo variable
+- [ ] complexity variable
 
 
 
