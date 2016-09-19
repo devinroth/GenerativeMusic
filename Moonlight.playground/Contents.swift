@@ -4,7 +4,7 @@ import Foundation
 import CoreMIDI
 
 //master controls
-var seed = 1
+var seed = 0
 var tempo = 60
 
 //midi setup
