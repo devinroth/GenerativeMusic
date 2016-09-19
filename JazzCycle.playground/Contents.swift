@@ -6,6 +6,7 @@ import CoreMIDI
 //control variables
 var seed = 1
 var tempo = 120
+var complexity = 0.5
 
 
 //midi setup
@@ -47,14 +48,17 @@ var piano:[[Int?]] = [
     [nil,    nil,   4,      nil,    1,      nil ],
     [nil,    nil,   4,      nil,    nil,    1   ],
     [nil,    8,     nil,    nil,    -2,     -1  ],
+    [nil,    nil,   nil,    nil,    nil,    nil ],
     [nil,    3,     5,      nil,    -2,     -1  ],
     [nil,    9,     -1,     nil,    -2,     -1  ],
     [nil,    6,     -3,     nil,    1,      1   ],
+    [nil,    nil,   nil,    nil,    nil,    nil ],
     [nil,    3,     3,      nil,    -2,     1   ],
     [nil,    1,     2,      nil,    1,      1   ],
     [nil,    10,    -2,     nil,    -2,     -1  ],
     [nil,    7,     -1,     nil,    -2,     1   ],
     [nil,    4,     -1,     nil,    3,      -1  ],
+    [nil,    nil,   nil,    nil,    nil,    nil ],
     [nil,    3,     nil,    3,      -2,     1   ],
     [1,     1,     1,       nil,    3,     -1   ],
     [1,     1,     1,       3,      -2,     1   ],
@@ -70,6 +74,7 @@ var bassNote = 0
 
 //drum rhythms
 var ride:[[Bool]] = [
+    [false,false,false,false,false,false],
     [false,false,false,false,false,true],
     [false,false,false,false,true,true],
     [false,false,true,false,true,true]
@@ -81,7 +86,7 @@ var chord = pianoChords[bassNote%2]
 while true {
     
     //select patterns
-    var pianoPattern = random(piano.count)
+    var pianoPattern = random(piano.count )
     if pianoPattern == 0 {
         pianoNote += 5
     }
@@ -193,4 +198,21 @@ while true {
         pianoNote = pianoNote - 12 * random(2)
     }
 }
+
+
+//0 = 0-0
+//50 = 0-20
+//100 = 20-20
+
+//0 = -20...0
+//50 = 0 - 20
+//100 = 20 - 40
+
+//var offset = 10.0
+//var values = 10.0
+//20.0/100.0 * values
+
+
+
+
 
