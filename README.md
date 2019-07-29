@@ -4,8 +4,6 @@ The goal of this project is to create generative music based on specific style u
 
 For this project the algorithms produce a midi output which is routed to Kontakt and played back with virtual instruments. I view each algorithm as a separate musical work. 
 
-[TOC]
-
 ## JazzCycle
 
 JazzCycle follows a common jazz improvisation exersice on the circle of fifths.
