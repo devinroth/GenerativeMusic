@@ -1,6 +1,6 @@
 # GenerativeMusic
 
-The goal of this project is to create generative music based on specific style using Swift Playground on macOS with Xcode 8.
+The goal of this project is to create generative music based on specific style using Swift Playground on macOS.
 
 For this project the algorithms produce a midi output which is routed to Kontakt and played back with virtual instruments. I view each algorithm as a separate musical work. 
 
