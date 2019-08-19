@@ -1,5 +1,7 @@
 # GenerativeMusic
 
+License: GNU General Public License v3.0. Free to use for open source projects. 
+
 The goal of this project is to create generative music based on specific style using Swift Playground on macOS.
 
 For this project the algorithms produce a midi output which is routed to Kontakt and played back with virtual instruments. I view each algorithm as a separate musical work. 
